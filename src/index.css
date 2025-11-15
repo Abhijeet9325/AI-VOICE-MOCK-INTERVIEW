@@ -1,0 +1,168 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Serendale.ai Design System */
+
+    /* Primary Colors */
+    --serendale-black: 0 0% 0%; /* #000000 */
+    --serendale-white: 0 0% 100%; /* #FFFFFF */
+
+    /* Gradient Colors */
+    --serendale-gradient-pink: 301 100% 56%; /* #FF1CF7 */
+    --serendale-gradient-cyan: 180 100% 50%; /* #00F0FF */
+
+    /* Dark Theme */
+    --background: var(--serendale-black);
+    --foreground: var(--serendale-white);
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 210 40% 98%;
+
+    --radius: 0.5rem;
+  }
+
+@layer components {
+  /* Serendale.ai Text Effects */
+  .text-gradient-serendale {
+    @apply bg-gradient-to-r from-serendale-gradient-pink to-serendale-gradient-cyan bg-clip-text text-transparent;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 8px hsl(var(--serendale-gradient-cyan) / 0.8), 0 0 20px hsl(var(--serendale-gradient-pink) / 0.6);
+  }
+
+  /* Glassmorphism */
+  .glass {
+    background: rgba(16, 16, 18, 0.6);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+@layer utilities {
+  /* Serendale.ai Animations */
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes text-glow {
+    0%, 100% {
+      text-shadow: 0 0 8px hsl(var(--serendale-gradient-cyan) / 0.8), 0 0 20px hsl(var(--serendale-gradient-pink) / 0.6);
+    }
+    50% {
+      text-shadow: 0 0 12px hsl(var(--serendale-gradient-cyan) / 1), 0 0 30px hsl(var(--serendale-gradient-pink) / 0.8);
+    }
+  }
+
+  .animate-gradient-shift {
+    animation: gradient-shift 15s ease infinite;
+  }
+
+  .animate-text-glow {
+    animation: text-glow 4s ease-in-out infinite;
+  }
+
+  /* Grid Pattern Background */
+  .bg-grid-pattern {
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  .dark .bg-grid-pattern {
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  }
+}
+
+  .dark {
+    --background: var(--serendale-black);
+    --foreground: var(--serendale-white);
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 210 40% 98%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Infinite smooth scroll animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite; /* Adjust speed: 20s faster, 40s slower */
+}
