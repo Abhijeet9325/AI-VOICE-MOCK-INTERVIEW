@@ -42,12 +42,12 @@ const Header = () => {
             {/* CTA Buttons */}
             {!userId ? (
               <div className="flex items-center gap-3">
-                <NavLink
+                {/* <NavLink
                   to="/signin"
                   className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors"
                 >
                   Sign In
-                </NavLink>
+                </NavLink> */}
                 <NavLink to="/generate">
                   <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white">
                     Start Free Trial

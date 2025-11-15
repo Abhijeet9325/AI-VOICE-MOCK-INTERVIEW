@@ -69,6 +69,34 @@ const HeroSection = () => {
                 </Button> */}
               </div>
 
+              {/* Secondary CTA Links */}
+              <div className="flex flex-wrap gap-3 pt-2">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-2 border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white px-6 py-4 font-medium rounded-xl transition-all duration-300"
+                  onClick={() => navigate("/about")}
+                >
+                  About Us
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-2 border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white px-6 py-4 font-medium rounded-xl transition-all duration-300"
+                  onClick={() => navigate("/services")}
+                >
+                  Services
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-2 border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white px-6 py-4 font-medium rounded-xl transition-all duration-300"
+                  onClick={() => navigate("/contact")}
+                >
+                  Contact Us
+                </Button>
+              </div>
+
               {/* Stats */}
               <div className="grid grid-cols-3 gap-8 pt-8 border-t border-white/10">
                 {stats.map((stat, index) => (

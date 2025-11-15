@@ -16,6 +16,9 @@ import { MockInterviewPage } from "./routes/mock-interview-page";
 import { Feedback } from "./routes/feedback";
 import { ErrorBoundary } from "./components/error-boundary";
 import Homepage from "./components/homepage";
+import AboutPage from "./routes/about";
+import ServicesPage from "./routes/services";
+import ContactPage from "./routes/contact";
 
 // Loading wrapper component
 const LoadingWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -72,6 +75,9 @@ const App = () => {
               {/* public routes */}
               <Route element={<PublicLayout />}>
                 <Route index element={<Homepage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/services" element={<ServicesPage />} />
+                <Route path="/contact" element={<ContactPage />} />
               </Route>
 
               {/* authentication layout */}
