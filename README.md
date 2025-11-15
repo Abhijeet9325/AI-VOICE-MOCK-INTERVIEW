@@ -75,7 +75,12 @@ This platform simulates real interview experiences with AI-generated questions, 
 
 
 
+🧑‍💻 Author
+Abhijeet Wankhade
 
+Passionate developer focused on building AI-powered apps, modern UIs & scalable web solutions.
+
+GitHub: https://github.com/Abhijeet9325
 
 
 
