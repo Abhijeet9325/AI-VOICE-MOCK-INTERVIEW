@@ -67,6 +67,15 @@ This platform simulates real interview experiences with AI-generated questions, 
 
 <img width="960" height="469" alt="Screenshot 2025-11-15 222216" src="https://github.com/user-attachments/assets/cc005bdc-0e2d-4d16-b466-6fa994e993ee" />
 
+<img width="960" height="481" alt="Screenshot 2025-11-15 222436" src="https://github.com/user-attachments/assets/5c8e6923-3853-42db-88f6-fff6779a5712" />
+
+<img width="960" height="479" alt="Screenshot 2025-11-15 222509" src="https://github.com/user-attachments/assets/b6d5821b-fd48-4443-bc72-c87a77843b26" />
+
+<img width="960" height="471" alt="Screenshot 2025-11-15 222537" src="https://github.com/user-attachments/assets/f953ccf0-8ae9-4a01-a18f-770f2260ad2f" />
+
+
+
+
 
 
 
