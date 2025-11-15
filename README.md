@@ -1,50 +1,72 @@
-# React + TypeScript + Vite
+ 🎤 AI Mock Interview Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A fully-featured, AI-powered mock interview application built using **React**, **TypeScript**, **Vite**, **Firebase**, and **Clerk Authentication**.  
+This platform simulates real interview experiences with AI-generated questions, live feedback, camera-based answering, and saved interview sessions.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+ 🚀 Features
 
-## Expanding the ESLint configuration
+ 🔐 Authentication (Clerk)
+- Secure Sign-Up, Login & User Session Management.
+- Protected routes for authorized users only.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+ 🤖 AI-Powered Mock Interviews
+- Generate tailored interview questions based on:
+  - Role
+  - Experience
+  - Skillset
+  - Industry
 
-- Configure the top-level `parserOptions` property like this:
+ 🎥 Real Video Interview Experience
+- Record answers using your device camera.
+- **Switch between Front & Back camera** during the interview.
+- Smooth and fast camera switching.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+ 📝 AI Feedback System
+- Get answer-quality analysis:
+  - Strengths
+  - Weaknesses
+  - Improvement suggestions
+  - Confidence score
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+ 💾 Save Interview Sessions
+- Save your interview recordings, questions, and feedback.
+- Access all past mock interviews in your dashboard.
+- Revisit and continue anytime.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+ 📊 User Dashboard
+- Modern UI using **ShadCN UI + TailwindCSS + Radix UI**.
+- View saved interview sessions.
+- Create new interview sessions instantly.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+ 🔥 Firebase Firestore (Optional)
+- Stores user session data if enabled.
+- Real-time reads with scalable NoSQL architecture.
+
+---
+
+ 🧰 Tech Stack
+
+| Technology | Purpose |
+|-----------|----------|
+| **React + TypeScript** | Frontend UI Logic |
+| **Vite** | Fast development & build |
+| **Clerk** | Authentication & user management |
+| **Firebase Firestore** | Database (optional) |
+| **ShadCN UI + Tailwind** | UI components & styling |
+| **Lucide Icons** | Icons |
+
+---
+
+📸 Screenshots
+
+<img width="960" height="476" alt="Screenshot 2025-11-15 221916" src="https://github.com/user-attachments/assets/be24a978-8741-42db-876f-057e6feca496" />
+
+<img width="960" height="478" alt="Screenshot 2025-11-15 222127" src="https://github.com/user-attachments/assets/6eb4979b-f864-4cb5-8b51-7bff99a459f5" />
+
+<img width="960" height="469" alt="Screenshot 2025-11-15 222216" src="https://github.com/user-attachments/assets/cc005bdc-0e2d-4d16-b466-6fa994e993ee" />
+
+
+
+
