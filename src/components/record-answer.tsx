@@ -52,7 +52,17 @@ export const RecordAnswer = ({
     stopSpeechToText,
   } = useSpeechToText({
     continuous: true,
+    crossBrowser: true,
+    interimResults: true,
     useLegacyResults: false,
+    // Prevent auto-stop on silence; 0 disables timeout
+    timeout: 0,
+    // Ensure SpeechRecognition runs in continuous mode with interim results
+    speechRecognitionProperties: {
+      continuous: true,
+      interimResults: true,
+      lang: "en-US",
+    },
   });
 
   const [userAnswer, setUserAnswer] = useState("");
@@ -60,6 +70,9 @@ export const RecordAnswer = ({
   const [aiResult, setAiResult] = useState<AIResponse | null>(null);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  // Track quick auto-stops and restart once to stabilize recording
+  const [lastStartTime, setLastStartTime] = useState<number | null>(null);
+  const [autoRestartEnabled, setAutoRestartEnabled] = useState(false);
 
   const { userId } = useAuth();
   const { interviewId } = useParams();
@@ -99,6 +112,8 @@ export const RecordAnswer = ({
     } else {
       try {
         await startSpeechToText();
+        setLastStartTime(Date.now());
+        setAutoRestartEnabled(true);
         toast.success("Recording started", {
           description: "Speak clearly into your microphone",
         });
@@ -193,6 +208,8 @@ export const RecordAnswer = ({
     setUserAnswer("");
     stopSpeechToText();
     startSpeechToText();
+    setLastStartTime(Date.now());
+    setAutoRestartEnabled(true);
   };
 
   const saveUserAnswer = async () => {
@@ -249,6 +266,8 @@ export const RecordAnswer = ({
       // Reset for next answer
       setUserAnswer("");
       stopSpeechToText();
+      setAutoRestartEnabled(false);
+      setLastStartTime(null);
       
     } catch (error) {
       console.error("Save Error:", error);
@@ -282,6 +301,25 @@ export const RecordAnswer = ({
 
     setUserAnswer(combineTranscripts);
   }, [results]);
+
+  // If recording stops within a short window after starting,
+  // auto-restart once to combat premature termination on some browsers.
+  useEffect(() => {
+    if (!isRecording && autoRestartEnabled && lastStartTime) {
+      const elapsed = Date.now() - lastStartTime;
+      if (elapsed < 4000) {
+        startSpeechToText().catch((error) => {
+          console.error("Auto-restart failed:", error);
+          toast.error("Failed to keep recording on", {
+            description: "Please check microphone permissions and try again.",
+          });
+        });
+        // Avoid infinite loops; only one auto-restart
+        setAutoRestartEnabled(false);
+        setLastStartTime(Date.now());
+      }
+    }
+  }, [isRecording, autoRestartEnabled, lastStartTime, startSpeechToText]);
 
   return (
     <div className="w-full flex flex-col items-center gap-8 mt-4">
