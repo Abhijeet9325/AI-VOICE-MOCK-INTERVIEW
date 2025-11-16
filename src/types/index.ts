@@ -1,4 +1,4 @@
-import { FieldValue, Timestamp } from "firebase/firestore";~
+import { FieldValue, Timestamp } from "firebase/firestore";
 
 export interface User {
   id: string;
@@ -16,9 +16,12 @@ export interface Interview {
   experience: number;
   userId: string;
   techStack: string;
-  questions: { question: string; answer: string }[];
-  createdAt: Timestamp;
-  updateAt: Timestamp;
+  questions: {
+    question: string;
+    answer: string;
+  }[];
+  createdAt: Timestamp | FieldValue;
+  updateAt: Timestamp | FieldValue;
 }
 
 export interface UserAnswer {
@@ -30,6 +33,6 @@ export interface UserAnswer {
   feedback: string;
   rating: number;
   userId: string;
-  createdAt: Timestamp;
-  updateAt: Timestamp;
+  createdAt: Timestamp | FieldValue;
+  updateAt: Timestamp | FieldValue;
 }
