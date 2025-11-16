@@ -293,8 +293,7 @@ export const RecordAnswer = ({
 
   useEffect(() => {
     const combineTranscripts = results
-      .filter((result): result is ResultType => typeof result !== "string")
-      .map((result) => result.transcript)
+      .map((result) => (typeof result === "string" ? result : result.transcript))
       .join(" ");
 
     setUserAnswer(combineTranscripts);
