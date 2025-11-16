@@ -11,7 +11,9 @@ import {
   WebcamIcon,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import useSpeechToText, { ResultType } from "react-hook-speech-to-text";
+// import useSpeechToText, { ResultType } from "react-hook-speech-to-text";
+import useSpeechToText from "react-hook-speech-to-text";
+
 import { useParams } from "react-router-dom";
 import WebCam from "react-webcam";
 import { TooltipButton } from "./tooltip-button";
