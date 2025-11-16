@@ -53,13 +53,11 @@ export const RecordAnswer = ({
   } = useSpeechToText({
     continuous: true,
     crossBrowser: true,
-    interimResults: true,
     useLegacyResults: false,
     // Prevent auto-stop on silence; 0 disables timeout
     timeout: 0,
     // Ensure SpeechRecognition runs in continuous mode with interim results
     speechRecognitionProperties: {
-      continuous: true,
       interimResults: true,
       lang: "en-US",
     },

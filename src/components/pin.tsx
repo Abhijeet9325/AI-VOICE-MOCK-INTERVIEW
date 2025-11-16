@@ -45,13 +45,15 @@ export const InterviewPin = ({
         )}
       >
         <p className="text-[12px] text-gray-500 truncate whitespace-nowrap">
-          {`${new Date(interview?.createdAt.toDate()).toLocaleDateString(
-            "en-US",
-            { dateStyle: "long" }
-          )} - ${new Date(interview?.createdAt.toDate()).toLocaleTimeString(
-            "en-US",
-            { timeStyle: "short" }
-          )}`}
+          {(() => {
+            const created = interview?.createdAt as unknown as {
+              toDate?: () => Date;
+            } | Date | undefined;
+            const dateObj = typeof (created as any)?.toDate === "function"
+              ? (created as any).toDate()
+              : (created instanceof Date ? created : new Date());
+            return `${dateObj.toLocaleDateString("en-US", { dateStyle: "long" })} - ${dateObj.toLocaleTimeString("en-US", { timeStyle: "short" })}`;
+          })()}
         </p>
 
         {!onMockPage && (
