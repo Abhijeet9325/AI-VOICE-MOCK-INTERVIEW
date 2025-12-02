@@ -18,7 +18,6 @@ export const QuestionSection = ({ questions }: QuestionSectionProps) => {
 
   const handlePlayQuestion = (qst: string) => {
     if (isPlaying && currentSpeech) {
-      // stop the speech if already playing
       window.speechSynthesis.cancel();
       setIsPlaying(false);
       setCurrentSpeech(null);
@@ -29,7 +28,6 @@ export const QuestionSection = ({ questions }: QuestionSectionProps) => {
         setIsPlaying(true);
         setCurrentSpeech(speech);
 
-        // handle the speech end
         speech.onend = () => {
           setIsPlaying(false);
           setCurrentSpeech(null);
@@ -59,7 +57,7 @@ export const QuestionSection = ({ questions }: QuestionSectionProps) => {
         orientation="vertical"
       >
         <TabsList className="bg-transparent w-full flex flex-wrap items-center justify-start gap-4 h-auto">
-          {uniqueQuestions?.map((tab, i) => (
+          {uniqueQuestions?.map((_, i) => (
             <TabsTrigger
               className={cn(
                 "data-[state=active]:bg-emerald-200 data-[state=active]:text-emerald-900 data-[state=active]:shadow-none text-xs px-2 rounded-md border border-emerald-300"
