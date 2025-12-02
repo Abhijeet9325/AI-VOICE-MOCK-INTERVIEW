@@ -72,7 +72,7 @@ export const MockLoadPage = () => {
           </AlertTitle>
           <AlertDescription className="text-sm text-yellow-700 mt-1">
             Please enable your webcam and microphone to start the AI-generated
-            mock interview. The interview consists of five questions. You’ll
+            mock interview. The interview consists of {interview?.questionCount ?? interview?.questions?.length ?? 5} questions. You’ll
             receive a personalized report based on your responses at the end.{" "}
             <br />
             <br />

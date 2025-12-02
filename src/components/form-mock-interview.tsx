@@ -46,6 +46,11 @@ const formSchema = z.object({
     .number()
     .min(0, "Experience cannot be empty or negative"),
   techStack: z.string().min(1, "Tech stack must be at least a character"),
+  questionCount: z.coerce
+    .number()
+    .min(1, "At least 1 question")
+    .max(20, "Maximum 20 questions")
+    .default(10),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -53,7 +58,9 @@ type FormData = z.infer<typeof formSchema>;
 export const FormMockInterview = ({ initialData }: FormMockInterviewProps) => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData || {},
+    defaultValues: initialData
+      ? { ...initialData, questionCount: (initialData as any).questionCount ?? 10 }
+      : { questionCount: 10 },
   });
 
   const { isValid, isSubmitting } = form.formState;
@@ -102,54 +109,190 @@ export const FormMockInterview = ({ initialData }: FormMockInterviewProps) => {
   };
 
   const buildFallbackQuestions = (data: FormData): { question: string; answer: string }[] => {
-    const techs = data.techStack.split(/[,\s]+/).filter(Boolean);
+    const techs = data.techStack.split(/[\s,\/\+]+/).map((t) => t.trim()).filter(Boolean);
     const primary = techs[0] || "your primary stack";
-    return [
-      {
-        question: `Describe your experience with ${primary}. What key projects showcase your skills?`,
-        answer: "Highlight 2–3 projects, specific responsibilities, performance improvements, and technologies used.",
-      },
-      {
-        question: `How do you architect applications using ${primary}?`,
-        answer: "Explain typical architecture, state/data management, modular design, testing, and deployment patterns.",
-      },
-      {
-        question: `What best practices do you follow for code quality in ${primary}?`,
-        answer: "Discuss code reviews, linting, type safety, testing strategy, performance profiling, and documentation.",
-      },
-      {
-        question: `Share a challenging bug or performance issue you solved in ${primary}.`,
-        answer: "Describe the issue, investigation steps, tools used, fix applied, and measurable impact.",
-      },
-      {
-        question: `How do you handle scalability and reliability for ${primary} applications?`,
-        answer: "Cover caching, pagination, error handling, monitoring, CI/CD, and rollback strategies.",
-      },
+    const count = Math.max(1, Math.min(20, data.questionCount ?? 10));
+
+    // Ordered easiest → advanced for freshers (0–1 years)
+    const categories = [
+      "component design",
+      "styling approaches",
+      "accessibility",
+      "form handling",
+      "routing",
+      "state management",
+      "data fetching",
+      "asynchronous patterns",
+      "error handling",
+      "type safety",
+      "testing strategy",
+      "performance optimization",
+      "caching strategies",
+      "code splitting",
+      "SSR/SSG",
+      "security considerations",
+      "build tooling",
+      "observability and logging",
+      "CI/CD",
+      "design patterns",
     ];
+
+    const makeQuestionForCategory = (t: string, c: string) => {
+      switch (c) {
+        case "component design":
+          return `How would you design a simple component in ${t}? Cover props, state, and composition.`;
+        case "styling approaches":
+          return `Compare styling options in ${t} (CSS modules, Tailwind, UI libs). When do you choose each?`;
+        case "accessibility":
+          return `What practices ensure accessibility in ${t} apps? Include landmarks, semantics, and focus management.`;
+        case "form handling":
+          return `Walk through building a robust form in ${t}. Discuss validation, UX, and error messaging.`;
+        case "routing":
+          return `Explain how routing works in ${t}. Include dynamic routes, nested layouts, and navigation pitfalls.`;
+        case "state management":
+          return `When do you use local state vs a store in ${t}? Describe trade-offs and typical patterns.`;
+        case "data fetching":
+          return `How do you fetch and display API data in ${t}? Include loading, error, and retry strategies.`;
+        case "asynchronous patterns":
+          return `Describe handling async flows in ${t}. Cover effects, race conditions, and cancellation.`;
+        case "error handling":
+          return `How do you design user-friendly error handling in ${t}? Show examples of boundaries and fallbacks.`;
+        case "type safety":
+          return `What does type safety look like in ${t}? Explain models, generics, and reducing runtime bugs.`;
+        case "testing strategy":
+          return `Outline a test plan for ${t}. Which parts get unit vs integration tests and why?`;
+        case "performance optimization":
+          return `How do you measure and improve performance in ${t}? Mention profiling, memoization, and metrics.`;
+        case "caching strategies":
+          return `What client-side caching approaches fit ${t}? Explain keys, invalidation, and stale data handling.`;
+        case "code splitting":
+          return `Why and how do you implement code splitting in ${t}? Include lazy routes and bundles.`;
+        case "SSR/SSG":
+          return `Discuss SSR/SSG trade-offs in ${t}. Cover hydration, data strategies, and SEO considerations.`;
+        case "security considerations":
+          return `Which security risks affect ${t} apps? Explain XSS/CSRF prevention and safe auth patterns.`;
+        case "build tooling":
+          return `What build tools do you configure for ${t}? Cover linting, formatting, bundling, and checks.`;
+        case "observability and logging":
+          return `How do you observe client behavior in ${t}? Discuss structured logs, error tracking, and dashboards.`;
+        case "CI/CD":
+          return `Design a simple CI/CD for ${t}. Describe build/test gates, environments, and releases.`;
+        case "design patterns":
+          return `Which design patterns help in ${t}? Provide a small example and explain its benefits.`;
+        default:
+          return `Explain your approach to ${c} in ${t}. Include rationale and a brief example.`;
+      }
+    };
+
+    const answerForCategory = (c: string) => {
+      switch (c) {
+        case "component design":
+          return "Use clear props, isolated state, composition over inheritance, and predictable rendering.";
+        case "styling approaches":
+          return "Choose per scope: global tokens, utility classes, or component-level styles with consistency.";
+        case "accessibility":
+          return "Apply semantics, ARIA where needed, keyboard support, focus traps, and color contrast checks.";
+        case "form handling":
+          return "Validate inputs, show inline feedback, handle edge cases, and prevent double submissions.";
+        case "routing":
+          return "Define clear route hierarchy, handle params safely, and ensure navigation state persists.";
+        case "state management":
+          return "Prefer local state first, elevate when shared, use stores sparingly, and document flows.";
+        case "data fetching":
+          return "Centralize API calls, manage loading/error states, retry wisely, and cache predictable data.";
+        case "asynchronous patterns":
+          return "Use async/await, guard against races, cancel stale requests, and debounce bursty updates.";
+        case "error handling":
+          return "Catch failures centrally, show helpful messages, log details, and provide recovery options.";
+        case "type safety":
+          return "Model data with types/interfaces, leverage generics, and avoid any/unknown without guards.";
+        case "testing strategy":
+          return "Test critical paths, isolate logic, use integration for flows, and avoid fragile UI tests.";
+        case "performance optimization":
+          return "Profile first, memoize expensive work, virtualize lists, and monitor core web vitals.";
+        case "caching strategies":
+          return "Define cache keys, set TTLs, invalidate on writes, and fall back gracefully on stale data.";
+        case "code splitting":
+          return "Lazy-load heavy screens, prefetch critical chunks, and measure bundle impact.";
+        case "SSR/SSG":
+          return "Choose per need: SEO, personalization; hydrate correctly and avoid server-only APIs client-side.";
+        case "security considerations":
+          return "Sanitize inputs, escape output, use tokens safely, and protect against CSRF/XSS.";
+        case "build tooling":
+          return "Automate lint/format/test, enforce standards in CI, and keep configs versioned.";
+        case "observability and logging":
+          return "Emit structured logs, capture errors, instrument performance, and review dashboards.";
+        case "CI/CD":
+          return "Build and test on PRs, gate merges, deploy with environment configs, and roll back safely.";
+        case "design patterns":
+          return "Use patterns that clarify responsibilities, reduce duplication, and ease testing.";
+        default:
+          return "Explain the rationale, common techniques, and a simple example with trade-offs.";
+      }
+    };
+
+    const result: { question: string; answer: string }[] = [];
+    for (let i = 0; i < count; i++) {
+      const tech = techs[i % (techs.length || 1)] || primary;
+      const cat = categories[i];
+      result.push({ question: makeQuestionForCategory(tech, cat), answer: answerForCategory(cat) });
+    }
+    return result;
   };
 
   const generateAiResponse = async (data: FormData) => {
+    const count = Math.max(1, Math.min(20, data.questionCount ?? 10));
     const prompt = `
-        As an experienced prompt engineer, generate a JSON array containing 5 technical interview questions along with detailed answers based on the following job information. Each object in the array should have the fields "question" and "answer", formatted as follows:
-
-        [
-          { "question": "<Question text>", "answer": "<Answer text>" },
-          ...
-        ]
+        Generate a JSON array containing ${count} strictly unique technical interview questions with detailed answers, tailored for freshers (0–1 years).
+        Each object must have "question" and "answer" fields.
 
         Job Information:
         - Job Position: ${data?.position}
         - Job Description: ${data?.description}
-        - Years of Experience Required: ${data?.experience}
         - Tech Stacks: ${data?.techStack}
 
-        The questions should assess skills in ${data?.techStack} development and best practices, problem-solving, and experience handling complex requirements. Please format the output strictly as an array of JSON objects without any additional labels, code blocks, or explanations. Return only the JSON array with questions and answers.
+        Interview style and ordering:
+        - Simulate a real-life interviewer. Use clear, concise, practical phrasing.
+        - Order questions progressively: easiest → intermediate → advanced.
+          • Beginner: fundamentals, definitions, simple use cases, basic syntax/APIs.
+          • Intermediate: implementation details (state/data handling, routing, async/data fetching, error handling), small scenarios.
+          • Advanced: testing strategy, performance optimization, type safety, security, architecture and design patterns, trade-offs.
+
+        Content guidance:
+        - Mix question types used in real interviews:
+          • "Explain/Why/When" questions (concept comprehension and decision reasoning)
+          • "How would you" practical implementation tasks
+          • Scenario/debugging questions (identify causes, propose fixes)
+          • Performance and optimization questions (measure, improve, verify)
+          • Design a feature/API questions (requirements, data flow, edge cases)
+          • Code review/pitfalls questions (identify anti-patterns, propose improvements)
+        - Keep scope aligned to ${data?.techStack}. Avoid trick questions beyond that stack.
+
+        Constraints:
+        - All questions must be strictly unique; avoid duplicates or near-duplicates.
+        - Vary phrasing and focus across questions; do not reuse the same sentence structure.
+        - Do NOT include labels like "Variant" or numbering in the question text.
+        - Return ONLY a valid JSON array without code fences or extra text.
+
+        Example format:
+        [
+          { "question": "<Beginner-level question>", "answer": "<Clear, practical answer>" },
+          { "question": "<Intermediate-level question>", "answer": "<Clear, practical answer>" },
+          { "question": "<Advanced-level question>", "answer": "<Clear, practical answer>" }
+        ]
         `;
 
     try {
       const aiResult = await chatSession.sendMessage(prompt);
       const cleanedResponse = cleanAiResponse(aiResult.response.text());
-      return cleanedResponse.length ? cleanedResponse : buildFallbackQuestions(data);
+      const unique = dedupeQuestions(cleanedResponse);
+      let sliced = unique.slice(0, count);
+      if (sliced.length < count) {
+        const fallback = buildFallbackQuestions(data);
+        const combined = dedupeQuestions([...sliced, ...fallback]);
+        sliced = combined.slice(0, count);
+      }
+      return sliced.length ? sliced : buildFallbackQuestions(data);
     } catch (error) {
       // Fallback to deterministic questions when AI fails
       return buildFallbackQuestions(data);
@@ -219,6 +362,7 @@ export const FormMockInterview = ({ initialData }: FormMockInterviewProps) => {
         description: initialData.description,
         experience: initialData.experience,
         techStack: initialData.techStack,
+        questionCount: (initialData as any).questionCount ?? 10,
       });
     }
   }, [initialData, form]);
@@ -338,6 +482,32 @@ export const FormMockInterview = ({ initialData }: FormMockInterviewProps) => {
             )}
           />
 
+          <FormField
+            control={form.control}
+            name="questionCount"
+            render={({ field }) => (
+              <FormItem className="w-full space-y-4">
+                <div className="w-full flex items-center justify-between">
+                  <FormLabel className="text-gray-900 font-medium">Number of Questions</FormLabel>
+                  <FormMessage className="text-sm" />
+                </div>
+                <FormControl>
+                  <Input
+                    type="number"
+                    min={1}
+                    max={20}
+                    className="h-12 bg-white text-gray-900 border-sky-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 shadow-sm"
+                    disabled={loading}
+                    placeholder="eg:- 10"
+                    {...field}
+                    value={Number(field.value ?? 10)}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
           <div className="w-full flex items-center justify-end gap-6">
             <Button
               type="reset"
@@ -366,3 +536,24 @@ export const FormMockInterview = ({ initialData }: FormMockInterviewProps) => {
     </div>
   );
 };
+  const dedupeQuestions = (
+    items: { question: string; answer: string }[],
+  ): { question: string; answer: string }[] => {
+    const normalize = (s: string) =>
+      s
+        .toLowerCase()
+        .replace(/\(variant.*?\)/gi, "") // strip any variant markers
+        .replace(/[^\w\s]/g, " ") // remove punctuation
+        .replace(/\s+/g, " ") // collapse whitespace
+        .trim();
+    const seen = new Set<string>();
+    const out: { question: string; answer: string }[] = [];
+    for (const it of items) {
+      const key = normalize(it.question || "");
+      if (key && !seen.has(key)) {
+        seen.add(key);
+        out.push(it);
+      }
+    }
+    return out;
+  };

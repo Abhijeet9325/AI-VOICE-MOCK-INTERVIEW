@@ -17,6 +17,7 @@ export interface Interview {
   userId: string;
   techStack: string;
   questions: { question: string; answer: string }[];
+  questionCount?: number;
   createdAt: Timestamp | FieldValue;
   updateAt: Timestamp | FieldValue;
 }
