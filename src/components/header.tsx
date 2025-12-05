@@ -48,11 +48,11 @@ const Header = () => {
                 >
                   Sign In
                 </NavLink> */}
-                <NavLink to="/generate">
+                {/* <NavLink to="/generate">
                   <Button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white">
                     Start Free Trial
                   </Button>
-                </NavLink>
+                </NavLink> */}
               </div>
             ) : (
               <NavLink to="/generate">
