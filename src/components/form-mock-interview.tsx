@@ -146,7 +146,7 @@ export const FormMockInterview = ({ initialData }: FormMockInterviewProps) => {
       cat: { name: string; focus: "tech" | "desc" | "pos" | "exp" },
       pos: string,
       desc: string,
-      isFresher: boolean,
+      _isFresher: boolean,
     ) => {
       const c = cat.name;
       switch (c) {
